@@ -1,6 +1,6 @@
 # ToDoList Application
 
-This project is a simple ToDoList application built using Docker and Kubernetes. It provides an easy-to-use interface for managing tasks and demonstrates containerization and orchestration best practices.
+This repository contains the source code and deployment scripts for the ToDoList Application. The application can be deployed using Docker or Kubernetes.
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -16,7 +16,7 @@ This project is a simple ToDoList application built using Docker and Kubernetes.
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed on your system:
+Before you begin, ensure you have the following installed:
 
 - **Git**: To clone the repository.
 - **Docker**: To build and run the application in a containerized environment.
