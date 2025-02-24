@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <form id="todo-form">
+            <input type="text" id="todo-input" placeholder="Enter a new todo"><br>
+            <input type="datetime-local" id="todo-time" placeholder="Enter timing">
+            <button type="submit">Add</button>
+        </form>
+        <ul id="todo-list"></ul>
+    </div>
+    <script>
+        document.getElementById('todo-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const todoInput = document.getElementById('todo-input');
+            const todoTime = document.getElementById('todo-time');
+            const todo = todoInput.value;
+            const time = todoTime.value;
+            fetch('/todos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ todo, time })
+            }).then(response => response.json()).then(data => {
+                if (data.message === 'Todo added successfully') {
+                    const todoList = document.getElementById('todo-list');
+                    const li = document.createElement('li');
+                    li.textContent = `${todo} (at ${new Date(time).toLocaleString()})`;
+                    const button = document.createElement('button');
+                    button.textContent = 'Delete';
+                    button.addEventListener('click', function() {
+                        fetch(`/todos/${Array.from(todoList.children).indexOf(li)}`, {
+                            method: 'DELETE'
+                        }).then(response => response.json()).then(data => {
+                            if (data.message === 'Todo deleted successfully') {
+                                todoList.removeChild(li);
+                            }
+                        });
+                    });
+                    li.appendChild(button);
+                    todoList.appendChild(li);
+                    todoInput.value = '';
+                    todoTime.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
